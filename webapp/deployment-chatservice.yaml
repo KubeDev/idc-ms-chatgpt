@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "chat_service"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+spec:
+  selector:
+    app: mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatservice
+spec:
+  selector:
+    matchLabels:
+      app: chatservice
+  template:
+    metadata:
+      labels:
+        app: chatservice
+    spec:
+      containers:
+      - name: chatservice
+        image: fabricioveronez/gpt-chatservice:v1
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        - containerPort: 50051
+          name: grpc
+          protocol: TCP
+        env:
+        - name: DB_DRIVER
+          value: mysql
+        - name: DB_HOST
+          value: chatservice.cgrcivy6tiia.us-east-1.rds.amazonaws.com
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
+          value: admin
+        - name: DB_PASSWORD
+          value: "Senha1234"
+        - name: DB_NAME
+          value: chatservice
+        - name: WEB_SERVER_PORT
+          value: "8080"
+        - name: GRPC_SERVER_PORT
+          value: "50051"     
+        - name: INITIAL_CHAT_MESSAGE
+          value: "Seu nome é Jarvis. Você é a inteligência artificial da iniciativa DevOps && Cloud. Você da suporte a programadores e profissionais de infraestrutura."
+        - name: OPENAI_API_KEY
+          value: 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
+        - name: AUTH_TOKEN
+          value: "123456"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatservice
+spec:
+  selector:
+    app: chatservice
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+      nodePort: 30000
+      name: http
+    - port: 50051
+      protocol: TCP
+      targetPort: 50051
+      nodePort: 30002
+      name: grpc
