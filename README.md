@@ -8,6 +8,9 @@ Para acessar todas as aulas e lives, acesse: https://imersao.devopspro.com.br/
 
 ### Aula 01
 
+O repositório do projeto conversão de temperatura está no link abaixo:
+https://github.com/KubeDev/conversao-temperatura
+
 ### Aula 02
 
 ### Aula 03
