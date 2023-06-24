@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-mysql
+spec:
+  selector:
+    matchLabels:
+      app: webapp-mysql
+  template:
+    metadata:
+      labels:
+        app: webapp-mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "root"
+        - name: MYSQL_DATABASE
+          value: "webchat"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-mysql
+spec:
+  selector:
+    app: webapp-mysql
+  ports:
+  - port: 3306
+    targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: fabricioveronez/imersao-gpt-webapp:v1
+        ports:
+        - containerPort: 3000
+          name: http
+          protocol: TCP
+        env:
+        - name: DATABASE_URL
+          value: mysql://root:root@webapp-mysql:3306/webchat
+        - name: NEXTAUTH_URL
+          value: http://localhost:3000/api/auth
+        - name: NEXTAUTH_SECRET
+          value: "123456"
+        - name: KEYCLOAK_CLIENT_ID
+          value: gpt-webapp
+        - name: KEYCLOAK_CLIENT_SECRET
+          value: htcSs54AxFzk0pF89HDcnbigzibOCRiq
+        - name: KEYCLOAK_ISSUER
+          value: http://keycloak:8080/realms/master
+        - name: CHATSERVICE_URL
+          value: "chatservice:50051"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+spec:
+  selector:
+    app: webapp
+  type: NodePort
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 3000
+      nodePort: 30000
+      name: http
