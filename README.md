@@ -7,9 +7,16 @@
 Para acessar todas as aulas e lives, acesse: https://imersao.devopspro.com.br/
 
 ### Aula 01
+Nessa aula você vai aprender os fundamentos de DevOps e como trabalhar com containers utilizando Docker.
 
 O repositório do projeto conversão de temperatura está no link abaixo:
+
 https://github.com/KubeDev/conversao-temperatura
+
+**Links úteis**
+Ferramenta Dbeaver para acessar banco de dados:
+
+https://dbeaver.io/download/
 
 ### Aula 02
 
