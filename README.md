@@ -6,7 +6,7 @@
 
 Para acessar todas as aulas e lives, acesse: https://imersao.devopspro.com.br/
 
-### Aula 01
+## Aula 01
 Nessa aula você vai aprender os fundamentos de DevOps e como trabalhar com containers utilizando Docker.
 
 O repositório do projeto conversão de temperatura está no link abaixo:
@@ -18,10 +18,47 @@ Ferramenta Dbeaver para acessar banco de dados:
 
 https://dbeaver.io/download/
 
-### Aula 02
+## Aula 02
+**Passos para subir a aplicação:**
+- Primeiro criar o cluster Kubernetes com o K3D fazendo o port bind das 2 portas para a aplicação
+``` bash
+k3d cluster create meucluster -p "3000:30000@loadbalancer" -p "8080:30001@loadbalancer"
+```
+- Construir a imagem docker da aplicação chatservice
+- Aplicar o manifesto do chatservice
+- Aplicar o manifesto do Keycloak 
+- Alterar o arquivo host da máquina para adicionar o host keycloak 
+- Construir a imagem docker da aplicação webapp
+- Aplicar o manifesto da aplicação webapp
 
-### Aula 03
+**Links úteis**
 
-### Aula 04
+Link para o DBeaver:
 
-### Aula 05
+https://dbeaver.io/download/
+
+Link para a plataforma da OpenAI:
+
+https://platform.openai.com/
+
+Link para o postman:
+
+https://www.postman.com/
+
+Caminho do arquivo host nos sistemas operacionais:
+
+Windows - C:\Windows\System32\drivers\etc\hosts
+
+Linux - /etc/hosts
+
+Mac - /etc/hosts
+
+Adicionar a linha abaixo:
+
+127.0.0.1       keycloak
+
+## Aula 03
+
+## Aula 04
+
+## Aula 05
