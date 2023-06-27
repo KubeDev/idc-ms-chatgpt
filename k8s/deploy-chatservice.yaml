@@ -76,7 +76,7 @@ spec:
           - name: INITIAL_CHAT_MESSAGE
             value: "Seu nome é Jarvis. Você é a inteligência artificial da iniciativa DevOps && Cloud. Você da suporte a programadores e profissionais de infraestrutura."
           - name: OPENAI_API_KEY
-            value: ""      
+            value: {{API_TOKEN}}
           - name: AUTH_TOKEN
             value: "123456"
 ---
