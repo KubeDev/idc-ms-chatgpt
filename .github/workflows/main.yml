@@ -9,18 +9,56 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Autenticando no Docker Registry
+        uses: docker/login-action@v2.2.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USR }}
+          password: ${{ secrets.DOCKERHUB_PWD }}
       - name: Docker build chatservice
-        run: echo "Docker build chatservice"
+        uses: docker/build-push-action@v4.1.1
+        with: 
+          context: ./chatservice
+          file: ./chatservice/Dockerfile
+          push: true
+          tags: |
+            fabricioveronez/imersao-chatservice:v${{ github.run_number }}
+            fabricioveronez/imersao-chatservice:latest
       - name: Docker build webapp
-        run: echo "Docker build webapp"
+        uses: docker/build-push-action@v4.1.1
+        with: 
+          context: ./webapp
+          file: ./webapp/Dockerfile
+          push: true
+          tags: |
+            fabricioveronez/imersao-gpt-webapp:v${{ github.run_number }}
+            fabricioveronez/imersao-gpt-webapp:latest
   CD:
     runs-on: ubuntu-latest
     needs: [CI]
     steps:
       - uses: actions/checkout@v3
+      
       - name: Autenticar o AWS CLI
-        run: echo "Configurar o aws configure"
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+          
+      - name: Configuração do OpenAI API Token
+        shell: bash
+        run: |
+          sed -i "s/{{API_TOKEN}}/${{ secrets.OPENAI_API_KEY }}/g" ./k8s/deploy-chatservice.yaml
+      
       - name: Configuração do Kubectl
-        run: echo "Configurar o kubectl"
+        shell: bash
+        run: |
+          aws eks update-kubeconfig --name eks-imersao --region us-east-1
+        
       - name: Deploy das aplicações
-        run: echo "Executar o comando kubectl apply"
+        uses: Azure/k8s-deploy@v4.9
+        with:
+          manifests: |
+            k8s/deploy-chatservice.yaml
+          images: |
+            fabricioveronez/imersao-chatservice:v${{ github.run_number }}
