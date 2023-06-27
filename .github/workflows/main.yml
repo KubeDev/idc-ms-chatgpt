@@ -60,5 +60,7 @@ jobs:
         with:
           manifests: |
             k8s/deploy-chatservice.yaml
+            k8s/deploy-webapp.yaml
           images: |
             fabricioveronez/imersao-chatservice:v${{ github.run_number }}
+            fabricioveronez/imersao-gpt-webapp:v${{ github.run_number }}
