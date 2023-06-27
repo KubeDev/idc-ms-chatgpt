@@ -38,7 +38,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Autenticar o AWS CLI
-        run: echo "Configurar o aws configure"
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secret.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secret.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
       - name: Configuração do Kubectl
         run: echo "Configurar o kubectl"
       - name: Deploy das aplicações
