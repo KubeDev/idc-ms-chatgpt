@@ -9,10 +9,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Comando LS
-        run: ls -l
       - name: Docker build chatservice
         run: echo "Docker build chatservice"
       - name: Docker build webapp
         run: echo "Docker build webapp"
-    
+  CD:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Autenticar o AWS CLI
+        run: echo "Configurar o aws configure"
+      - name: Configuração do Kubectl
+        run: echo "Configurar o kubectl"
+      - name: Deploy das aplicações
+        run: echo "Executar o comando kubectl apply"
