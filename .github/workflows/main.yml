@@ -10,9 +10,23 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Docker build chatservice
-        run: echo "Docker build chatservice"
+        uses: docker/build-push-action@v4.1.1
+        with: 
+          context: ./chatservice
+          file: ./chatservice/Dockerfile
+          push: true
+          tags: |
+            fabricioveronez/imersao-chatservice:v1
+            fabricioveronez/imersao-chatservice:latest
       - name: Docker build webapp
-        run: echo "Docker build webapp"
+        uses: docker/build-push-action@v4.1.1
+        with: 
+          context: ./webapp
+          file: ./webapp/Dockerfile
+          push: true
+          tags: |
+            fabricioveronez/imersao-gpt-webapp:v1
+            fabricioveronez/imersao-gpt-webapp:latest
   CD:
     runs-on: ubuntu-latest
     needs: [CI]
