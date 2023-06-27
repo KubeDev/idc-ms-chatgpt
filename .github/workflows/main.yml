@@ -15,6 +15,7 @@ jobs:
         run: echo "Docker build webapp"
   CD:
     runs-on: ubuntu-latest
+    needs: [CI]
     steps:
       - uses: actions/checkout@v3
       - name: Autenticar o AWS CLI
