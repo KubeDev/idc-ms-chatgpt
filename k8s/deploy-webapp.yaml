@@ -57,15 +57,15 @@ spec:
         - name: DATABASE_URL
           value: mysql://root:root@webapp-mysql:3306/webchat
         - name: NEXTAUTH_URL
-          value: http://localhost:3000/api/auth
+          value: http://a8319ee95d7fe42d783ab924aa7c8b36-765495673.us-east-1.elb.amazonaws.com/api/auth
         - name: NEXTAUTH_SECRET
           value: "123456"
         - name: KEYCLOAK_CLIENT_ID
           value: gpt-webapp
         - name: KEYCLOAK_CLIENT_SECRET
-          value: htcSs54AxFzk0pF89HDcnbigzibOCRiq
+          value: 6H5gI5oASmYM74HrwhdPdzVJn6uCmBsP
         - name: KEYCLOAK_ISSUER
-          value: http://keycloak:8080/realms/master
+          value: http://aed6935ab669d403ea1eaec2f2507bb8-869034135.us-east-1.elb.amazonaws.com/realms/master
         - name: CHATSERVICE_URL
           value: "chatservice:50051"
 ---
@@ -76,10 +76,10 @@ metadata:
 spec:
   selector:
     app: webapp
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 80
       protocol: TCP
       targetPort: 3000
-      nodePort: 30000
+      #nodePort: 30000
       name: http
