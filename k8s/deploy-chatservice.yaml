@@ -43,6 +43,10 @@ spec:
       app: chatservice
   template:
     metadata:
+      # annotations:
+      #   prometheus.io/scrape: "true"
+      #   prometheus.io/port: "8080"
+      #   prometheus.io/path: "/metrics"
       labels:
         app: chatservice
     spec: 
@@ -87,7 +91,7 @@ metadata:
 spec: 
   selector: 
     app: chatservice
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - port: 8080
       protocol: TCP
