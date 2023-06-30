@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/chi/v5"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type WebServer struct {
@@ -30,6 +31,7 @@ func (s *WebServer) Start() {
 	for path, handler := range s.Handlers {
 		s.Router.Handle(path, handler)
 	}
+	s.Router.Handle("/metrics", promhttp.Handler())
 
 	if err := http.ListenAndServe(s.WebServerPort, s.Router); err != nil {
 		panic(err.Error())
