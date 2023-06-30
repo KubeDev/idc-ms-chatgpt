@@ -42,15 +42,16 @@ kind: Deployment
 metadata:
   name: webapp
 spec:
+  replicas: 6
   selector:
     matchLabels:
       app: webapp
   template:
     metadata:
-      # annotations:
-      #   prometheus.io/scrape: "true"
-      #   prometheus.io/port: "9464"
-      #   prometheus.io/path: "/metrics"
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9464"
+        prometheus.io/path: "/metrics"
       labels:
         app: webapp
     spec:
@@ -65,15 +66,15 @@ spec:
         - name: DATABASE_URL
           value: mysql://root:root@webapp-mysql:3306/webchat
         - name: NEXTAUTH_URL
-          value: http://24.199.67.229/api/auth
+          value: http://ac5640bc9b39945179c088b980ba55ca-1068278803.us-east-2.elb.amazonaws.com/api/auth
         - name: NEXTAUTH_SECRET
           value: "123456"
         - name: KEYCLOAK_CLIENT_ID
           value: gpt-webapp
         - name: KEYCLOAK_CLIENT_SECRET
-          value: TM5SPf8Yf8lC2iHjknDxJpMsSItkmese
+          value: V8gJoNUxlYW7fi2LcollCXrzEiq4B6uk
         - name: KEYCLOAK_ISSUER
-          value: http://167.172.0.230//realms/master
+          value: http://ab040fa472bab4de380080f4791fe0ab-1453415156.us-east-2.elb.amazonaws.com/realms/master
         - name: CHATSERVICE_URL
           value: "chatservice:50051"
 ---
@@ -91,8 +92,8 @@ spec:
       targetPort: 3000
       #nodePort: 30000
       name: http
-    - port: 9464
-      protocol: TCP
-      targetPort: 9464
-      #nodePort: 30000
-      name: metrics
+    # - port: 9464
+    #   protocol: TCP
+    #   targetPort: 9464
+    #   #nodePort: 30000
+    #   name: metrics
