@@ -53,7 +53,7 @@ jobs:
       - name: Configuração do Kubectl
         shell: bash
         run: |
-          aws eks update-kubeconfig --name eks-imersao --region us-east-1
+          aws eks update-kubeconfig --name imersao-eks --region us-east-1
         
       - name: Deploy das aplicações
         uses: Azure/k8s-deploy@v4.9
